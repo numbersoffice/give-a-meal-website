@@ -30,15 +30,21 @@ export default async function NavigationDesktop({
           >
             {nav.pickUp}
           </LinkWithHover>
-          <LinkWithHover
-            href={localeLink("/give-a-meal", lang)}
-            className="body"
-          >
-            {nav.donate}
-          </LinkWithHover>
-          {/* <NavItem label={nav.donate}>
-                    <LinkWithHover href={localeLink("/donors/profile", lang)} className="body">{nav.donorProfile}</LinkWithHover>
-                </NavItem> */}
+
+          <NavItem label={nav.donate}>
+            <LinkWithHover
+              href={localeLink("/give-a-meal", lang)}
+              className="body"
+            >
+              {nav.donate}
+            </LinkWithHover>
+            <LinkWithHover
+              href={localeLink("/donors/profile", lang)}
+              className="body"
+            >
+              {nav.donorProfile}
+            </LinkWithHover>
+          </NavItem>
           <LinkWithHover
             href={localeLink("/restaurants", lang)}
             className="body"

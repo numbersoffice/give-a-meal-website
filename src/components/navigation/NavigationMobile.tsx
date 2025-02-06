@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import localeLink from "@/utils/localeLink";
 import React, { useEffect } from "react";
 import NavLinkMobile from "../navLinkMobile";
+import Button from "../button";
 
 export default function NavigationMobile({
   lang,
@@ -64,8 +65,19 @@ export default function NavigationMobile({
             href={localeLink("/restaurants", lang)}
             className="body"
           ></NavLinkMobile>
-          {/* <NavLinkMobile label={nav.donorProfile} onClick={() => setActive(false)} href={localeLink("/donors/profile", lang)} className="body"></NavLinkMobile> */}
-          {/* <Button className={styles.mobileButton} onClick={() => setActive(false)} href={localeLink("/app", lang)}>{nav.apps}</Button > */}
+          <NavLinkMobile
+            label={nav.donorProfile}
+            onClick={() => setActive(false)}
+            href={localeLink("/donors/profile", lang)}
+            className="body"
+          ></NavLinkMobile>
+          <Button
+            className={styles.mobileButton}
+            onClick={() => setActive(false)}
+            href={localeLink("/app", lang)}
+          >
+            {nav.apps}
+          </Button>
         </div>
         <div
           onClick={() => setActive(false)}
