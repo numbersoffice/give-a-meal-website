@@ -81,6 +81,7 @@ export async function middleware(request: NextRequest) {
   // Response: create new URL
   const url = new URL(currentPathname, request.nextUrl.origin);
   console.log(`New URL: ${url}`);
+  console.log(`Host Header: ${request.headers.get("host")}`);
 
   // Response: return the modified url and query parameters
   // Prevent re-direct if the current pathname is the same as the request pathname
