@@ -56,6 +56,7 @@ export async function GET(request: NextRequest) {
       maxAge: expiresIn,
       httpOnly: true,
       secure: isDev ? false : true,
+      domain: host,
     };
 
     cookies().set(options);
