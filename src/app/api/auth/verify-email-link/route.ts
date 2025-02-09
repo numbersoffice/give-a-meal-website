@@ -7,6 +7,7 @@ import {
   isSignInWithEmailLink,
   signInWithEmailLink,
 } from "firebase/auth";
+import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -52,6 +53,7 @@ export async function GET(request: NextRequest) {
       maxAge: expiresIn,
       httpOnly: true,
       secure: isDev ? false : true,
+      sameSite: "none" as "none",
     };
 
     cookies().set(options);
