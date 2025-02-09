@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import { i18n } from "./i18n-config";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
+import getProxyOrigin from "./utils/getProxyOrigin";
 
 const pathsWithoutLocale = [
   "/_next/",
@@ -20,11 +21,8 @@ const protectedPaths = ["/donors/profile"];
  * @returns request
  */
 export async function middleware(request: NextRequest) {
-  // SYSTEM
-  // Get host from header for use behind a reverse proxy.
-  // Nextjs does not use it by default
-  const host = request.headers.get("host");
-  if (!host) return NextResponse.next();
+  const origin = getProxyOrigin(request);
+  if (!origin) return NextResponse.next();
 
   let currentPathname = request.nextUrl.pathname;
 
@@ -54,9 +52,10 @@ export async function middleware(request: NextRequest) {
     if (currentPathname === request.nextUrl.pathname) {
       return NextResponse.next();
     } else {
-      return NextResponse.redirect(
-        new URL(currentPathname + request.nextUrl.search, host)
-      );
+      const slug = currentPathname + request.nextUrl.search;
+      console.log("host: ", origin);
+      const url = new URL(slug, origin);
+      return NextResponse.redirect(url);
     }
   }
 
@@ -82,7 +81,7 @@ export async function middleware(request: NextRequest) {
   currentPathname = `${currentPathname}?${params.toString()}`;
 
   // Response: create new URL
-  const url = new URL(currentPathname, host);
+  const url = new URL(currentPathname, origin);
 
   // Response: return the modified url and query parameters
   // Prevent re-direct if the current pathname is the same as the request pathname
@@ -148,7 +147,7 @@ async function handleAuthentication(
   request: NextRequest,
   pathname: string
 ): Promise<AuthResult> {
-  const host = request.headers.get("host");
+  const origin = getProxyOrigin(request);
 
   let authResulst: AuthResult = {
     pathname: pathname,
@@ -158,7 +157,7 @@ async function handleAuthentication(
   // Verify ID token
   try {
     const cookie = request.headers.get("cookie") || "";
-    let response = await fetch(`${host}/api/auth/verify-id-token`, {
+    let response = await fetch(`${origin}/api/auth/verify-id-token`, {
       headers: { cookie },
     });
 

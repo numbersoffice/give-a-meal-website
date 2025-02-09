@@ -1,5 +1,6 @@
 import { auth as authConfig } from "@/lib/firebase";
 import { initAdminApp } from "@/lib/firebaseAdmin";
+import getProxyOrigin from "@/utils/getProxyOrigin";
 import { auth } from "firebase-admin";
 import {
   UserCredential,
@@ -13,7 +14,7 @@ import { NextRequest, NextResponse } from "next/server";
 initAdminApp();
 
 export async function GET(request: NextRequest) {
-  const host = request.headers.get("host");
+  const origin = getProxyOrigin(request);
   let userCredential: UserCredential | undefined;
 
   // Get email query parameters
@@ -28,7 +29,7 @@ export async function GET(request: NextRequest) {
   if (email && isValid) {
     userCredential = await signInWithEmailLink(authConfig, email, request.url);
   } else {
-    NextResponse.redirect(host + "/donors/login");
+    NextResponse.redirect(origin + "/donors/login");
   }
 
   if (userCredential) {
@@ -50,8 +51,8 @@ export async function GET(request: NextRequest) {
 
     cookies().set(options);
 
-    return NextResponse.redirect(`${host}/${lang}/donors/profile`);
+    return NextResponse.redirect(`${origin}/${lang}/donors/profile`);
   } else {
-    return NextResponse.redirect(`${host}/${lang}/donors/login`);
+    return NextResponse.redirect(`${origin}/${lang}/donors/login`);
   }
 }
