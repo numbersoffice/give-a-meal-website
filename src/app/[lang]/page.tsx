@@ -3,28 +3,40 @@ import Hero from "@/sections/Hero";
 import Why from "@/sections/Why";
 import FAQ from "@/components/faq";
 import CTA from "@/sections/CTA";
-import { Locale } from "@/i18n-config"
-import { getDictionary } from "@/get-dictionary-server"
+import { Locale } from "@/i18n-config";
+import { getDictionary } from "@/get-dictionary-server";
 import Badge from "@/components/badge";
 import InfoCards from "@/components/infoCards";
 import Footer from "@/components/footer";
 import { Metadata } from "next";
 import PartnerMarquee from "@/components/partnerMarquee";
 
-export async function generateMetadata(
-  { params }: { params: { lang: Locale } }
-): Promise<Metadata> {
-
-  const { pages: { home: { meta } } } = await getDictionary(params.lang)
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: Locale };
+}): Promise<Metadata> {
+  const {
+    pages: {
+      home: { meta },
+    },
+  } = await getDictionary(params.lang);
   return {
     title: meta.title,
     description: meta.description,
-  }
+  };
 }
 
-export default async function Home({ params: { lang } }: { params: { lang: Locale } }) {
-
-  const { pages: { home: { faq, howTo, partners } } } = await getDictionary(lang)
+export default async function Home({
+  params: { lang },
+}: {
+  params: { lang: Locale };
+}) {
+  const {
+    pages: {
+      home: { faq, howTo, partners },
+    },
+  } = await getDictionary(lang);
 
   return (
     <div className={styles.container}>
@@ -38,7 +50,10 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
           <Why lang={lang} />
           <div className="grid">
             <Badge className={styles.badgeHowItWorks}>{howTo.title}</Badge>
-            <InfoCards items={howTo.cards} className={styles.infoCardContainer} />
+            <InfoCards
+              items={howTo.cards}
+              className={styles.infoCardContainer}
+            />
           </div>
           <div className="grid">
             <Badge className={styles.badgeFAQ}>{faq.title}</Badge>
