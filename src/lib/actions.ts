@@ -41,7 +41,8 @@ export async function updateProfileName(formData: FormData) {
     throw new Error("Error updating profile name");
   }
 
-  revalidatePath(`/${rawFormData.lang}/donors/profile`);
+  revalidatePath(`/[lang]/donors/profile`, "layout");
+  revalidatePath(`/[lang]`);
   redirect(
     `/${rawFormData.lang}/donors/profile/general?success-form-name=${rawFormData.formName}`
   );
