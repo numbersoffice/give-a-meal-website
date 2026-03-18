@@ -27,7 +27,7 @@ export default function NearbyRestaurants({ className, dict }: { className: stri
                     <ListView dict={dict} />
                 </div>
                 <div className={styles.mapContainer}>
-                    <Map initialPosition={{ lat: 40.71333042607276, lon: -73.94550643347563 }} />
+                    <Map initialPosition={{ lat: 40.7143, lon: -73.9513 }} />
                 </div>
             </div>
         </NearbyRestaurantsProvider>

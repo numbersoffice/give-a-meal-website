@@ -22,7 +22,7 @@ export default function Map({ initialPosition, className }: { initialPosition: {
     } = useContext(NearbyRestaurantsContext)
     const mapRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<google.maps.Map>()
-    const [markers, setMarkers] = useState<google.maps.Marker[]>([])
+    const markersRef = useRef<google.maps.Marker[]>([])
 
     // ------------------
     // Map initialization
@@ -36,11 +36,12 @@ export default function Map({ initialPosition, className }: { initialPosition: {
     // Initialize markers
     useEffect(() => {
         if (map && businesses) {
-            // Makes a default selection
-            // !selectedBusiness && setSelectedBusiness({ business: businesses[0], index: 0 })
-            initMarkers(map, businesses, markers, setSelectedBusiness, selectedBusiness).then(setMarkers)
+            initMarkers(map, businesses, markersRef.current, setSelectedBusiness, selectedBusiness).then((newMarkers) => {
+                markersRef.current = newMarkers
+            })
         }
-    }, [map, businesses, markers, setSelectedBusiness, selectedBusiness])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [map, businesses])
 
 
     // ----------------------------------
@@ -88,22 +89,23 @@ export default function Map({ initialPosition, className }: { initialPosition: {
     // Update the markers when the selected business changes
     useEffect(() => {
         if (selectedBusiness && map && businesses) {
-            initMarkers(map, businesses, markers, setSelectedBusiness, selectedBusiness).then(setMarkers)
+            initMarkers(map, businesses, markersRef.current, setSelectedBusiness, selectedBusiness).then((newMarkers) => {
+                markersRef.current = newMarkers
+            })
         }
-    }, [businesses, map, markers, selectedBusiness, setSelectedBusiness])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedBusiness])
 
     // Update z-index of markers when selected business changes
     useEffect(() => {
-        markers.forEach((marker, index) => {
+        markersRef.current.forEach((marker, index) => {
             if (selectedBusiness && selectedBusiness.index === index) {
-                // Highlight the selected marker
                 marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
             } else {
-                // Reset zIndex for non-selected markers
                 marker.setZIndex(google.maps.Marker.MAX_ZINDEX);
             }
         });
-    }, [selectedBusiness, markers]);
+    }, [selectedBusiness]);
 
 
     // ---------
