@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node .next/standalone/server.js",
+    "start": "next start",
     "lint": "next lint",
     "translate": "node translateDictionaries.js",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
