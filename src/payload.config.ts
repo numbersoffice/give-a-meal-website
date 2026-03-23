@@ -20,6 +20,10 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 export default buildConfig({
+  serverURL: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+  // Should we add this?
+  cors: ["http://192.168.8.182:3000", "http://localhost:3000", "https://www.give-a-meal.org"],
+  csrf: ["http://192.168.8.182:3000", "http://localhost:3000", "https://www.give-a-meal.org"],
   admin: {
     user: Users.slug,
     importMap: {

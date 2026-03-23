@@ -9,6 +9,16 @@ export const BusinessUsers: CollectionConfig = {
   auth: {
     verify: true,
     tokenExpiration: 7776000,
+    forgotPassword: {
+      generateEmailHTML: (args) => {
+        const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/en/reset-password/${args?.token}`;
+        return `
+          <h1>Reset your password</h1>
+          <p>Click the link below to reset your password:</p>
+          <a href="${resetUrl}">${resetUrl}</a>
+        `;
+      },
+    },
   },
   access: {
     read: ({ req }) => {
