@@ -57,8 +57,6 @@ export async function GET(request: NextRequest) {
       reserved: reservedDonationIds.has(d.id),
     }));
 
-    console.log(docsWithReserved);
-
     // Filter out reserved donations when filtering by active status
     if (isActiveParam) {
       return NextResponse.json(docsWithReserved.filter((d) => !d.reserved));
@@ -91,8 +89,6 @@ export async function POST(request: NextRequest) {
       depth: 1,
       limit: 1,
     });
-
-    console.log(items);
 
     if (items.length === 0)
       throw new ApiError(

@@ -50,7 +50,7 @@ export const Verifications: CollectionConfig = {
         const details = await getBusinessDetailsFromGoogle(
           verification.placeId!,
         );
-        console.log(details);
+
         if (!details) {
           return Response.json(
             { error: "Failed to fetch business details from Google Places" },

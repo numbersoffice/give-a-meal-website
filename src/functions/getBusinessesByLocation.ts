@@ -48,7 +48,6 @@ export default async function getBusinessesByLocation(
     // Get businesses from API
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data)
     return data;
   } catch (err) {
     console.log(err);
