@@ -340,6 +340,7 @@ export interface Reservation {
    * 6-digit PIN the claimant must present to redeem.
    */
   pin: string;
+  expiresAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -628,6 +629,7 @@ export interface ReservationsSelect<T extends boolean = true> {
   donation?: T;
   deviceId?: T;
   pin?: T;
+  expiresAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

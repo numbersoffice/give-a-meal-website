@@ -49,6 +49,7 @@ export async function GET(request: NextRequest) {
         ...d,
         pin: reservation?.pin,
         reservationId: reservation?.id,
+        expiresAt: reservation?.expiresAt,
       };
     });
 

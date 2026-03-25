@@ -95,6 +95,7 @@ export async function POST(
     }
 
     const pin = generatePin();
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
 
     await payload.create({
       collection: "reservations",
@@ -102,6 +103,7 @@ export async function POST(
         donation: donationId,
         deviceId: storageId,
         pin,
+        expiresAt,
       },
     });
 

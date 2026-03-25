@@ -40,5 +40,14 @@ export const Reservations: CollectionConfig = {
         description: "6-digit PIN the claimant must present to redeem.",
       },
     },
+    {
+      name: "expiresAt",
+      type: "date",
+      admin: {
+        date: {
+          pickerAppearance: "dayAndTime",
+        },
+      },
+    },
   ],
 };
