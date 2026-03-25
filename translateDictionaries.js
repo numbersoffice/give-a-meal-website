@@ -42,7 +42,7 @@ async function translateText(text, textKeyName, context, targetLang) {
       body: body,
     });
     const data = await response.json();
-    console.log(data.choices[0].message);
+
     if (data.choices && data.choices.length > 0) {
       return data.choices[0].message.content; // Assuming there is at least one translation
     } else {

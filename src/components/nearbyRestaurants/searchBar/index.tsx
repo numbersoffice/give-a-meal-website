@@ -7,8 +7,6 @@ import Location from "@/public/assets/icons/location.svg"
 import Image from "next/image"
 import React from "react"
 import { NearbyRestaurantsContext } from "../Context"
-import geocodeAddress from "@/functions/geocodeAddress"
-
 export default function SearchBar({ dict }: { dict: string }) {
     const { setAddressFieldLocation, clientLocation, setClientLocation } = React.useContext(NearbyRestaurantsContext)
     const [value, setValue] = React.useState<string>("")
@@ -30,8 +28,13 @@ export default function SearchBar({ dict }: { dict: string }) {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
 
-        const location = await geocodeAddress(value)
-        if (location) setAddressFieldLocation(location)
+        try {
+            const res = await fetch(`/api/custom/public/geocode?address=${encodeURIComponent(value)}`)
+            const location = await res.json()
+            if (res.ok) setAddressFieldLocation(location)
+        } catch (error) {
+            console.error("Error during geocoding:", error)
+        }
     }
 
 
