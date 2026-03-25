@@ -104,4 +104,59 @@ export default buildConfig({
       },
     },
   }),
+  jobs: {
+    tasks: [
+      {
+        slug: "removeExpiredReservations",
+        handler: async ({ req }) => {
+          let docs = null;
+          try {
+            const { docs: _docs } = await req.payload.delete({
+              collection: "reservations",
+              where: {
+                expiresAt: {
+                  less_than: new Date(),
+                },
+              },
+            });
+            docs = _docs;
+          } catch (err) {
+            console.log(err);
+          }
+
+          return {
+            output: {
+              deletedCount: docs?.length || 0,
+            },
+          };
+        },
+        schedule: [
+          {
+            cron: "* * * * *",
+            queue: "reservations",
+          },
+        ],
+        outputSchema: [
+          {
+            name: "deletedCount",
+            type: "number",
+          },
+        ],
+      },
+    ],
+    autoRun: [
+      {
+        cron: "* * * * *",
+        queue: "reservations",
+      },
+    ],
+    jobsCollectionOverrides: ({ defaultJobsCollection }) => {
+      if (!defaultJobsCollection.admin) {
+        defaultJobsCollection.admin = {};
+      }
+
+      defaultJobsCollection.admin.hidden = false;
+      return defaultJobsCollection;
+    },
+  },
 });
