@@ -8,7 +8,7 @@ export const BusinessUsers: CollectionConfig = {
   },
   auth: {
     verify: true,
-    tokenExpiration: 7776000,
+    tokenExpiration: 2592000,
     forgotPassword: {
       generateEmailHTML: (args) => {
         const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/en/reset-password/${args?.token}`;
